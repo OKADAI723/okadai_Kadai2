@@ -12,7 +12,9 @@ final class ViewController: UIViewController {
     private var sumArrays : [UITextField] {
         [firstTextField, secondTextField]
     }
+    
     private var operation : Int = 0
+    
     @IBOutlet private weak var firstTextField: UITextField!
     @IBOutlet private weak var secondTextField: UITextField!
     @IBOutlet private weak var fourArithmeticOperationsSegmentedControl: UISegmentedControl!
@@ -36,16 +38,16 @@ final class ViewController: UIViewController {
         
         switch fourArithmeticOperationsSegmentedControl.selectedSegmentIndex {
         case 0:
-            let plusSum = sumArrays.map({Int($0.text ?? "") ?? 0}).reduce(0, +)
+            let plusSum = sumArrays.map({Double($0.text ?? "") ?? 0}).reduce(0, +)
             return Double(plusSum)
             
         case 1:
-            let mappedSum = sumArrays.map({Int($0.text ?? "") ?? 0})
-            let  minusSum = mappedSum[0] - mappedSum[1]
-            return Double(minusSum)
+            let mappedSum = sumArrays.map({Double($0.text ?? "") ?? 0})
+            let  minusSum = Double(mappedSum[0] - mappedSum[1])
+            return minusSum
             
         case 2:
-            let multiplicationSum = sumArrays.map({Int($0.text ?? "") ?? 0}).reduce(1, *)
+            let multiplicationSum = sumArrays.map({Double($0.text ?? "") ?? 0}).reduce(1, *)
             return Double(multiplicationSum)
             
         case 3:
@@ -53,7 +55,7 @@ final class ViewController: UIViewController {
                 resultLabel.text = "割る数には0以外を代入してね"
                 return 0
             }
-            let mappedSum = sumArrays.map({Int($0.text ?? "") ?? 0})
+            let mappedSum = sumArrays.map({Double($0.text ?? "") ?? 0})
             let divisionSum = Double(mappedSum[0] / mappedSum[1])
             return divisionSum
             

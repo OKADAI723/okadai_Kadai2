@@ -9,11 +9,9 @@ import UIKit
 
 final class ViewController: UIViewController {
     
-    private var sumArrays : [UITextField] {
+    private var textFields: [UITextField] {
         [firstTextField, secondTextField]
     }
-    
-    private var operation : Int = 0
     
     @IBOutlet private weak var firstTextField: UITextField!
     @IBOutlet private weak var secondTextField: UITextField!
@@ -24,44 +22,33 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sumButton.addTarget(self, action: #selector(tappedSumButton), for: .touchUpInside)
-        fourArithmeticOperationsSegmentedControl.addTarget(self, action: #selector(tappedFourArithmeticOperations), for: .valueChanged)
     }
 }
 
 
 @objc private extension ViewController {
     func tappedSumButton() {
-        resultLabel.text = String(tappedFourArithmeticOperations())
+        resultLabel.text = makeResultText()
     }
     
-    func tappedFourArithmeticOperations() -> Double {
+    private func makeResultText() -> String {
         
+        let values = textFields.map { Double($0.text ?? "") ?? 0 }
+
         switch fourArithmeticOperationsSegmentedControl.selectedSegmentIndex {
         case 0:
-            let plusSum = sumArrays.map({Double($0.text ?? "") ?? 0}).reduce(0, +)
-            return Double(plusSum)
-            
+            return String(values.reduce(0, +))
         case 1:
-            let mappedSum = sumArrays.map({Double($0.text ?? "") ?? 0})
-            let  minusSum = Double(mappedSum[0] - mappedSum[1])
-            return minusSum
-            
+            return String(values[0] - values[1])
         case 2:
-            let multiplicationSum = sumArrays.map({Double($0.text ?? "") ?? 0}).reduce(1, *)
-            return Double(multiplicationSum)
-            
+            return String(values.reduce(1, *))
         case 3:
-            guard sumArrays[1].text != "0" else {
-                resultLabel.text = "割る数には0以外を代入してね"
-                return 0
+            guard values[1] != 0 else {
+                return "割る数には0以外を代入してね"
             }
-            let mappedSum = sumArrays.map({Double($0.text ?? "") ?? 0})
-            let divisionSum = Double(mappedSum[0] / mappedSum[1])
-            return divisionSum
-            
+            return String(values[0] / values[1])
         default:
-            return 0
+            return ""
         }
     }
 }
-
